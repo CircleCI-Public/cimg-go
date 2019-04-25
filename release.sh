@@ -12,9 +12,9 @@ for i in "${!sortedVersions[@]}"; do
 
 	version=${sortedVersions[$i]}
 
-	git checkout -b awscli-v${version}
-	./gen-dockerfiles.sh ${version}
+	git checkout -b go-v${version}
+	./gen-dockerfiles.sh ${version} fake-sha
 	git add .
-	git commit -m "Add AWS CLI v${version}."
-	git push -u origin awscli-v${version}
+	git commit -m "Add Go v${version}."
+	git push -u origin go-v${version}
 done

@@ -26,7 +26,7 @@ fi
 [[ -d "$versionShort" ]] || mkdir "$versionShort"
 
 sed -r -e 's!%%PARENT%%!'"$parent"'!g' "./Dockerfile.template" > "$versionShort/Dockerfile"
-sed -i 's!%%GO_VERSION%%!'"$version"'!g' "$versionShort/Dockerfile"
+sed -i 's/%%GO_VERSION%%/'"${version}"'/g' "${versionShort}/Dockerfile"
 sed -i 's!%%GO_SHA%%!'"$sha"'!g' "$versionShort/Dockerfile"
 
 string="$string --file $versionShort/Dockerfile"
