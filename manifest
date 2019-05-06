@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-repository=golang
+repository=go
 parent=base
 variants=(node)
