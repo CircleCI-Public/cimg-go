@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build --file 1.12/Dockerfile -t circleciimages/golang:1.12.4  -t circleciimages/golang:1.12 .
+docker build --file 1.11/Dockerfile -t circleciimages/golang:1.11.10  -t circleciimages/golang:1.11 .
