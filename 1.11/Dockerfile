@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		libc6-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
-ENV GO_VERSION=1.11.11
+ENV GO_VERSION=1.11.12
 ENV GO_SHA=fake-sha
 
 RUN curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" | tar -xz -C /usr/local/
