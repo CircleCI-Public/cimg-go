@@ -1,8 +1,8 @@
 # vim:set ft=dockerfile:
 
-FROM circleciimages/base
+FROM cimg/base:2019.07
 
-LABEL maintainer="CircleCI <support@circleci.com>"
+LABEL maintainer="CircleCI Community & Partner Engineering Team <community-partner@circleci.com>"
 
 # Install packages needed for CGO
 RUN apt-get update && apt-get install -y --no-install-recommends \
