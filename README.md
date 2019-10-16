@@ -5,7 +5,7 @@
 		<img alt="Go Logo" src="img/circle-go.svg" width="75" />
 	</p>
 	<h1>CircleCI Convenience Images => Go</h1>
-	<h3>A Continous Integration focused Go Docker image built to run on CircleCI</h3>
+	<h3>A Continuous Integration focused Go Docker image built to run on CircleCI</h3>
 </div>
 
 [![CircleCI Build Status](https://circleci.com/gh/CircleCI-Public/cimg-go.svg?style=shield)](https://circleci.com/gh/CircleCI-Public/cimg-go) [![Software License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/CircleCI-Public/cimg-go/master/LICENSE) [![Docker Pulls](https://img.shields.io/docker/pulls/cimg/go)](https://hub.docker.com/r/cimg/go) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/circleci-images)
@@ -142,7 +142,7 @@ When releasing proper images for CircleCI, this script is run from a CircleCI pi
 
 The individual scripts (above) can be used to create the correct files for an image, and then added to a new git branch, committed, etc.
 A release script is included to make this process easier.
-To make a proper release for this image, lets's use the fake Go version of Go v9.99, you would run the following from the repo root:
+To make a proper release for this image, let's use the fake Go version of Go v9.99, you would run the following from the repo root:
 
 ```bash
 ./shared/release.sh 9.99
