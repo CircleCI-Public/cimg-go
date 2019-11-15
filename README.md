@@ -69,7 +69,7 @@ cimg/go:<go-version>[-variant]
 `<go-version>` - The version of Go to use.
 This can be a full SemVer point release (such as `1.12.7`) or just the minor release (such as `1.12`).
 If you use the minor release tag, it will automatically point to future patch updates as they are released by the Go Team.
-For example, the tag `1.13` points to GO v1.13 now, but when the next release comes out, it will point to Go v1.13.1.
+For example, the tag `1.13` points to Go v1.13 now, but when the next release comes out, it will point to Go v1.13.1.
 
 `[-variant]` - Variant tags, if available, can optionally be used.
 Once the Node.js variant is available, it could be used like this: `cimg/go:1.13-node`.
@@ -149,6 +149,8 @@ To make a proper release for this image, let's use the fake Go version of Go v9.
 ```
 
 This will automatically create a new Git branch, generate the Dockerfile(s), stage the changes, commit them, and push them to GitHub.
+The commit message will end with the string `[release]`.
+This string is used by CircleCI to know when to push images to Docker Hub.
 All that would need to be done after that is:
 
 - wait for build to pass on CircleCI
