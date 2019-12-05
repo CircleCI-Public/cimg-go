@@ -1,6 +1,6 @@
 # vim:set ft=dockerfile:
 
-FROM cimg/base:2019.10
+FROM cimg/base:2019.11
 
 LABEL maintainer="CircleCI Community & Partner Engineering Team <community-partner@circleci.com>"
 
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		libc6-dev && \
 	rm -rf /var/lib/apt/lists/*
 
-ENV GO_VERSION=1.12.13
+ENV GO_VERSION=1.12.14
 ENV GO_SHA=fake-sha
 
 RUN curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" | tar -xz -C /usr/local/ && \
