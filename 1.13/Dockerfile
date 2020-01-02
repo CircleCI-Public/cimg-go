@@ -1,22 +1,20 @@
 # vim:set ft=dockerfile:
 
-FROM cimg/base:2019.11
+FROM cimg/base:2020.01
 
-LABEL maintainer="CircleCI Community & Partner Engineering Team <community-partner@circleci.com>"
+LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
 # Install packages needed for CGO
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 		g++ \
 		libc6-dev && \
-	rm -rf /var/lib/apt/lists/*
+	sudo rm -rf /var/lib/apt/lists/*
 
 ENV GO_VERSION=1.13.5
-ENV GO_SHA=fake-sha
+ENV GO_SHA=
 
-RUN curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" | tar -xz -C /usr/local/ && \
-	mkdir -p /go/bin
+RUN curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
+	mkdir -p /home/circleci/go/bin
 
-ENV GOPATH /go
+ENV GOPATH /home/circleci/go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
-
-WORKDIR /root/project
