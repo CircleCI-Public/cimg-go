@@ -5,10 +5,10 @@ FROM cimg/%%PARENT%%:2020.01
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
 # Install packages needed for CGO
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 		g++ \
 		libc6-dev && \
-	rm -rf /var/lib/apt/lists/*
+	sudo rm -rf /var/lib/apt/lists/*
 
 ENV GO_VERSION=%%MAIN_VERSION%%
 ENV GO_SHA=%%MAIN_SHA%%
