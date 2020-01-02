@@ -2,7 +2,7 @@
 
 FROM cimg/%%PARENT%%:2020.01
 
-LABEL maintainer="CircleCI Community & Partner Engineering Team <community-partner@circleci.com>"
+LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
 # Install packages needed for CGO
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -18,5 +18,3 @@ RUN curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" | tar -
 
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
-
-WORKDIR /root/project
