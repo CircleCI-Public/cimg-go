@@ -10,8 +10,8 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 		libc6-dev && \
 	sudo rm -rf /var/lib/apt/lists/*
 
-ENV GO_VERSION=1.12.14
-ENV GO_SHA=
+ENV GO_VERSION=1.12.15
+ENV GO_SHA=fake-sha
 
 RUN curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
