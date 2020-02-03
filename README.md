@@ -10,7 +10,7 @@
 
 [![CircleCI Build Status](https://circleci.com/gh/CircleCI-Public/cimg-go.svg?style=shield)](https://circleci.com/gh/CircleCI-Public/cimg-go) [![Software License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/CircleCI-Public/cimg-go/master/LICENSE) [![Docker Pulls](https://img.shields.io/docker/pulls/cimg/go)](https://hub.docker.com/r/cimg/go) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/circleci-images)
 
-***This image is in beta and is designed to supercede the original CircleCI Go image, `circleci/golang`.***
+***This image is designed to supercede the legacy CircleCI Go image, `circleci/golang`.***
 
 `cimg/go` is a Docker image created by CircleCI with continuous integration builds in mind.
 Each tag contains a complete Go version and toolchain, the testing wrapper `gotestsum`, and any binaries and tools that are required for builds to complete successfully in a CircleCI environment.
