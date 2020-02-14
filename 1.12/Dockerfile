@@ -4,7 +4,7 @@ FROM cimg/base:2020.01
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VERSION=1.12.16
+ENV GO_VERSION=1.12.17
 ENV GO_SHA=fake-sha
 
 # Install packages needed for CGO
