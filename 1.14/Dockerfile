@@ -4,7 +4,7 @@ FROM cimg/base:2020.06
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VERSION=1.14.4
+ENV GO_VERSION=1.14.5
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
@@ -14,7 +14,7 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
 
-RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v0.4.2/gotestsum_0.4.2_linux_amd64.tar.gz" | \
+RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v0.5.1/gotestsum_0.5.1_linux_amd64.tar.gz" | \
 	sudo tar -xz -C /usr/local/bin gotestsum
 
 ENV GOPATH /home/circleci/go
