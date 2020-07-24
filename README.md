@@ -53,10 +53,23 @@ This includes support for Go modules, the official Go Proxy Server, etc.
 
 ### Variants
 
-This image will have a Node.js variant in the future.
 Variant images typically contain the same base software, but with a few additional modifications.
+
+#### Node.js
+
 The Node.js variant is the same Go image but with Node.js also installed.
 The Node.js variant will be used by appending `-node` to the end of an existing `cimg/go` tag.
+
+```yaml
+jobs:
+  build:
+    docker:
+      - image: cimg/go:1.13-node
+    steps:
+      - checkout
+      - run: go version
+      - run: node --version
+```
 
 ### Tagging Scheme
 
@@ -197,10 +210,10 @@ We encourage [issues](https://github.com/CircleCI-Public/cimg-go/issues) and [pu
 
 ## Additional Resources
 
-[CircleCI Docs](https://circleci.com/docs/) - The official CircleCI Documentation website.  
+[CircleCI Docs](https://circleci.com/docs/) - The official CircleCI Documentation website.
 [CircleCI Configuration Reference](https://circleci.com/docs/2.0/configuration-reference/#section=configuration) - From CircleCI Docs, the configuration reference page is one of the most useful pages we have.
-It will list all of the keys and values supported in `.circleci/config.yml`.  
-[Docker Docs](https://docs.docker.com/) - For simple projects this won't be needed but if you want to dive deeper into learning Docker, this is a great resource.  
+It will list all of the keys and values supported in `.circleci/config.yml`.
+[Docker Docs](https://docs.docker.com/) - For simple projects this won't be needed but if you want to dive deeper into learning Docker, this is a great resource.
 
 
 ## License
