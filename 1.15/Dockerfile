@@ -1,10 +1,10 @@
 # vim:set ft=dockerfile:
 
-FROM cimg/base:2020.09
+FROM cimg/base:2020.12
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VERSION=1.15.5
+ENV GO_VERSION=1.15.6
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
