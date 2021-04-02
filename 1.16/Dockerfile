@@ -1,10 +1,10 @@
 # vim:set ft=dockerfile:
 
-FROM cimg/base:2021.03
+FROM cimg/base:2021.04
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VERSION=1.16.2
+ENV GO_VERSION=1.16.3
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
@@ -14,7 +14,7 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
 
-RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.6.2/gotestsum_1.6.2_linux_amd64.tar.gz" | \
+RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.6.3/gotestsum_1.6.3_linux_amd64.tar.gz" | \
 	sudo tar -xz -C /usr/local/bin gotestsum
 
 ENV GOPATH /home/circleci/go
