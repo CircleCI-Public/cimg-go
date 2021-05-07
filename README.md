@@ -35,7 +35,7 @@ For example:
 jobs:
   build:
     docker:
-      - image: cimg/go:1.13
+      - image: cimg/go:1.16
     steps:
       - checkout
       - run: go version
