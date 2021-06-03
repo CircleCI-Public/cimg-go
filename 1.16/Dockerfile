@@ -4,7 +4,7 @@ FROM cimg/base:2021.04
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VERSION=1.16.4
+ENV GO_VERSION=1.16.5
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
