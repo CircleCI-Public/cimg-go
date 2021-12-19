@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   cimg-base-tag:
     type: string
-    default: "oas-3855-54403bbfeb0d5e419b000bb9f062fba367039530"
+    default: "oas-3855-54403bbfeb0d5e419b000bb9f062fba367039530" # TODO update before release
 
 jobs:
   build:
