@@ -27,3 +27,5 @@ RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.
 
 ENV GOPATH /home/circleci/go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
+RUN sudo ln -s /home/circleci/go /go
