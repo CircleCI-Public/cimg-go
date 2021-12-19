@@ -1,42 +1,27 @@
 version: 2.1
-
-workflows:
-  main:
-    jobs:
-      - build:
-          context: cimg-publishing
-
+executors:
+  go-executor:
+    docker:
+      - image: arangodboasis/cimg-base:todo
 jobs:
   build:
-    docker:
-      - image: cibuilds/docker:19.03
+    executor: go-executor
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: "Build Docker Images"
-          command: |
-            ./build-images.sh
-            echo 'export DOCKER_PASS=$DOCKER_TOKEN' >> $BASH_ENV
-      - deploy:
-          name: "Publish Docker Images (master branch only)"
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              
-              echo $DOCKER_TOKEN | docker login -u $DOCKER_USER --password-stdin
-              
-              # an else block will be added in the future for a staging release
-              if git log -1 --pretty=%s | grep "\[release\]"; then
-                echo "Publishing cimg/go to Docker Hub production."
-                docker push cimg/go
-              else
-                echo "Skipping publishing."
-              fi
+      - run: echo "$DOCKER_REGISTRY_PASSWORD" | base64 -d | docker login -u "$DOCKER_REGISTRY_USER" --password-stdin "$DOCKER_REGISTRY_HOST"
+      - run: ./build-images.sh
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
-              # Update the Docker Hub description
-              STUBB_VER=0.2.0
-              STUBB_URL="https://github.com/CircleCI-Public/stubb/releases/download/v${STUBB_VER}/stubb_${STUBB_VER}-linux-amd64.tar.gz"
-              curl -sSL $STUBB_URL | tar -xz -C /usr/local/bin stubb
+orbs:
+  slack: circleci/slack@4.1
 
-              stubb set description cimg/go ./README.md
-            fi
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          context: arangodboasis
+
