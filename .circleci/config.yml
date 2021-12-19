@@ -19,6 +19,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: echo "$DOCKER_REGISTRY_PASSWORD" | base64 -d | docker login -u "$DOCKER_REGISTRY_USER" --password-stdin "$DOCKER_REGISTRY_HOST"
+      - run: docker run --rm --privileged tonistiigi/binfmt:latest --install "$BUILDX_PLATFORMS"
       - run: ./build-images.sh
       - slack/notify:
           event: fail
