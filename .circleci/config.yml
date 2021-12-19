@@ -3,10 +3,14 @@ version: 2.1
 parameters:
   cimg-base-tag:
     type: string
-    default: "oas-3855-54403bbfeb0d5e419b000bb9f062fba367039530" # TODO update before release
+    default: "v0.4.0" # TODO update before release
 
 jobs:
   build:
+    parameters:
+      push_release:
+        type: boolean
+        default: false
     machine:
       image: ubuntu-1604:202007-01
     environment:
@@ -25,6 +29,13 @@ jobs:
       - run: docker buildx ls
       - run: echo "$DOCKER_REGISTRY_PASSWORD" | base64 -d | docker login -u "$DOCKER_REGISTRY_USER" --password-stdin "$DOCKER_REGISTRY_HOST"
       - run: ./build-images.sh
+      - when:
+          condition: <<parameters.push_release>>
+          steps:
+            - deploy:
+                name: Push docker image
+                command: |
+                  ./build-images.sh latest
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -38,3 +49,14 @@ workflows:
     jobs:
       - build:
           context: arangodboasis
+          filters:
+            tags:
+              ignore: /.*/
+      - build:
+          context: arangodboasis
+          push_release: true
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
