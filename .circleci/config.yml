@@ -22,6 +22,8 @@ jobs:
       - run: mkdir -vp ~/.docker/cli-plugins/
       - run: curl --silent -L --output ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.7.1/buildx-v0.7.1.linux-amd64
       - run: chmod a+x ~/.docker/cli-plugins/docker-buildx
+      - run: curl --silent -L --output ~/regctl https://github.com/regclient/regclient/releases/download/v0.3.9/regctl-linux-amd64
+      - run: chmod a+x ~/regctl
       - run: docker run --rm --privileged tonistiigi/binfmt:latest --install "$BUILDX_PLATFORMS"
       - run: docker buildx version
       - run: docker context create cictx
