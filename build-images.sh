@@ -5,6 +5,7 @@ echo Building ${DOCKERIMAGE}
 
 docker buildx install
 docker build \
+    --build-arg CIMGBASETAG=${CIMGBASETAG} \
     --platform linux/amd64,linux/arm64 \
     --push \
     --file 1.17/Dockerfile \

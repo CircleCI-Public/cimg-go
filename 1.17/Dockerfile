@@ -1,9 +1,11 @@
 # vim:set ft=dockerfile:
 
 # FROM cimg/base:2021.10
-FROM arangodboasis/cimg-base:2021.10
 
 # Oasis added begin
+ARG CIMGBASETAG
+FROM arangodboasis/cimg-base:${CIMGBASETAG}
+
 ARG TARGETPLATFORM
 ARG TARGETARCH
 # Oasis added end

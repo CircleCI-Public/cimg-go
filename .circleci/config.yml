@@ -1,11 +1,19 @@
 version: 2.1
+
+parameters:
+  cimg-base-tag:
+    type: string
+    default: "oas-3855-54403bbfeb0d5e419b000bb9f062fba367039530"
+
 executors:
   go-executor:
     docker:
-      - image: arangodboasis/cimg-base:todo
+      - image: arangodboasis/cimg-base:<< pipeline.parameters.cimg-base-tag >>
 jobs:
   build:
     executor: go-executor
+    environment:
+      CIMGBASETAG: << pipeline.parameters.cimg-base-tag >>
     steps:
       - checkout
       - setup_remote_docker
