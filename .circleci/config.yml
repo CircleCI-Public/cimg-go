@@ -9,6 +9,7 @@ executors:
   go-executor:
     docker:
       - image: arangodboasis/cimg-base:<< pipeline.parameters.cimg-base-tag >>
+
 jobs:
   build:
     executor: go-executor
