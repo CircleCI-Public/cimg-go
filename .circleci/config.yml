@@ -1,42 +1,62 @@
 version: 2.1
 
-workflows:
-  main:
-    jobs:
-      - build:
-          context: cimg-publishing
+parameters:
+  cimg-base-tag:
+    type: string
+    default: "v0.4.0" 
 
 jobs:
   build:
-    docker:
-      - image: cibuilds/docker:19.03
+    parameters:
+      push_release:
+        type: boolean
+        default: false
+    machine:
+      image: ubuntu-1604:202007-01
+    environment:
+      CIMGBASETAG: << pipeline.parameters.cimg-base-tag >>
+      DOCKER_BUILDKIT: 1
+      BUILDX_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - checkout
-      - setup_remote_docker
-      - run:
-          name: "Build Docker Images"
-          command: |
-            ./build-images.sh
-            echo 'export DOCKER_PASS=$DOCKER_TOKEN' >> $BASH_ENV
-      - deploy:
-          name: "Publish Docker Images (master branch only)"
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              
-              echo $DOCKER_TOKEN | docker login -u $DOCKER_USER --password-stdin
-              
-              # an else block will be added in the future for a staging release
-              if git log -1 --pretty=%s | grep "\[release\]"; then
-                echo "Publishing cimg/go to Docker Hub production."
-                docker push cimg/go
-              else
-                echo "Skipping publishing."
-              fi
+      - run: mkdir -vp ~/.docker/cli-plugins/
+      - run: curl --silent -L --output ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.7.1/buildx-v0.7.1.linux-amd64
+      - run: chmod a+x ~/.docker/cli-plugins/docker-buildx
+      - run: docker run --rm --privileged tonistiigi/binfmt:latest --install "$BUILDX_PLATFORMS"
+      - run: docker buildx version
+      - run: docker context create cictx
+      - run: docker buildx create cictx --platform linux/amd64,linux/arm64 --use
+      - run: docker buildx ls
+      - run: echo "$DOCKER_REGISTRY_PASSWORD" | base64 -d | docker login -u "$DOCKER_REGISTRY_USER" --password-stdin "$DOCKER_REGISTRY_HOST"
+      - run: ./build-images.sh
+      - when:
+          condition: <<parameters.push_release>>
+          steps:
+            - deploy:
+                name: Push docker image
+                command: |
+                  ./build-images.sh latest
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
-              # Update the Docker Hub description
-              STUBB_VER=0.2.0
-              STUBB_URL="https://github.com/CircleCI-Public/stubb/releases/download/v${STUBB_VER}/stubb_${STUBB_VER}-linux-amd64.tar.gz"
-              curl -sSL $STUBB_URL | tar -xz -C /usr/local/bin stubb
+orbs:
+  slack: circleci/slack@4.1
 
-              stubb set description cimg/go ./README.md
-            fi
+workflows:
+  version: 2
+  build_test_push_deploy:
+    jobs:
+      - build:
+          context: arangodboasis
+          filters:
+            tags:
+              ignore: /.*/
+      - build:
+          context: arangodboasis
+          push_release: true
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
