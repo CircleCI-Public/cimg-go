@@ -29,3 +29,4 @@ ENV GOPATH /home/circleci/go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 RUN sudo ln -s /home/circleci/go /go
+RUN chmod -R a+rwx /go
