@@ -8,13 +8,12 @@
 	<h3>A Continuous Integration focused Go Docker image built to run on CircleCI</h3>
 </div>
 
-[![CircleCI Build Status](https://circleci.com/gh/CircleCI-Public/cimg-go.svg?style=shield)](https://circleci.com/gh/CircleCI-Public/cimg-go) [![Software License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/CircleCI-Public/cimg-go/master/LICENSE) [![Docker Pulls](https://img.shields.io/docker/pulls/cimg/go)](https://hub.docker.com/r/cimg/go) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/circleci-images)
+[![CircleCI Build Status](https://circleci.com/gh/CircleCI-Public/cimg-go.svg?style=shield)](https://circleci.com/gh/CircleCI-Public/cimg-go) [![Software License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/CircleCI-Public/cimg-go/master/LICENSE) [![Docker Pulls](https://img.shields.io/docker/pulls/cimg/go)](https://hub.docker.com/r/cimg/go) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/circleci-images) [![Repository](https://img.shields.io/badge/github-README-brightgreen)](https://github.com/CircleCI-Public/cimg-go)
 
-***This image is designed to supercede the legacy CircleCI Go image, `circleci/golang`.***
+**_This image is designed to supercede the legacy CircleCI Go image, `circleci/golang`._**
 
 `cimg/go` is a Docker image created by CircleCI with continuous integration builds in mind.
 Each tag contains a complete Go version and toolchain, the testing wrapper `gotestsum`, and any binaries and tools that are required for builds to complete successfully in a CircleCI environment.
-
 
 ## Table of Contents
 
@@ -25,7 +24,6 @@ Each tag contains a complete Go version and toolchain, the testing wrapper `gote
 - [Additional Resources](#additional-resources)
 - [License](#license)
 
-
 ## Getting Started
 
 This image can be used with the CircleCI `docker` executor.
@@ -35,16 +33,15 @@ For example:
 jobs:
   build:
     docker:
-      - image: cimg/go:1.16
+      - image: cimg/go:1.17
     steps:
       - checkout
       - run: go version
 ```
 
 In the above example, the CircleCI Go Docker image is used for the primary container.
-More specifically, the tag `1.13` is used meaning the version of Go will be Go v1.13.
+More specifically, the tag `1.17` is used meaning the version of Go will be Go v1.17.
 You can now use Go within the steps for this job.
-
 
 ## How This Image Works
 
@@ -64,7 +61,7 @@ The Node.js variant will be used by appending `-node` to the end of an existing 
 jobs:
   build:
     docker:
-      - image: cimg/go:1.13-node
+      - image: cimg/go:1.17-node
     steps:
       - checkout
       - run: go version
@@ -84,7 +81,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/go:1.13-browsers
+      - image: cimg/go:1.17-browsers
     steps:
       - browser-tools/install-browser-tools
       - checkout
@@ -106,11 +103,10 @@ cimg/go:<go-version>[-variant]
 `<go-version>` - The version of Go to use.
 This can be a full SemVer point release (such as `1.12.7`) or just the minor release (such as `1.12`).
 If you use the minor release tag, it will automatically point to future patch updates as they are released by the Go Team.
-For example, the tag `1.13` points to Go v1.13 now, but when the next release comes out, it will point to Go v1.13.1.
+For example, the tag `1.17` points to Go v1.17 now, but when the next release comes out, it will point to Go v1.17.1.
 
 `[-variant]` - Variant tags, if available, can optionally be used.
-Once the Node.js variant is available, it could be used like this: `cimg/go:1.13-node`.
-
+Once the Node.js variant is available, it could be used like this: `cimg/go:1.17-node`.
 
 ## Development
 
@@ -152,16 +148,16 @@ Dockerfiles can be generated for a specific Go version using the `gen-dockerfile
 For example, to generate the Dockerfile for Go v1.13, you would run the following from the root of the repo:
 
 ```bash
-./shared/gen-dockerfiles.sh 1.13
+./shared/gen-dockerfiles.sh 1.17
 ```
 
-The generated Dockerfile will be located at `./1.13/Dockefile`.
+The generated Dockerfile will be located at `./1.17/Dockefile`.
 To build this image locally and try it out, you can run the following:
 
 ```bash
-cd 1.13
-docker build -t test/go:1.13 .
-docker run -it test/go:1.13 bash
+cd 1.17
+docker build -t test/go:1.17 .
+docker run -it test/go:1.17 bash
 ```
 
 ### Building the Dockerfiles
@@ -216,12 +212,11 @@ git commit -m "Updating submodule for foo."
 This is to aid in "determinism" and prevent breaking customer builds.
 New Go images will automatically pick up the changes.
 
-If you *really* want to publish changes from a parent image into the Go image, you have to build a specific image version as if it was a new image.
+If you _really_ want to publish changes from a parent image into the Go image, you have to build a specific image version as if it was a new image.
 This will create a new Dockerfile and once published, a new image.
 
 **Go specific changes** - Editing the `Dockerfile.template` file in this repo will modify the Go image specifically.
 Don't forget that to see any of these changes locally, the `gen-dockerfiles.sh` script will need to be run again (see above).
-
 
 ## Contributing
 
@@ -231,14 +226,12 @@ We encourage [issues](https://github.com/CircleCI-Public/cimg-go/issues) and [pu
 1. PRs are welcome. If you have a PR that will potentially take a large amount of time to make, it will be better to open an issue to discuss it first to make sure it's something worth investing the time in.
 1. Issues should be used to report bugs or request additional/removal of tools in this image. For help with images, please visit [CircleCI Discuss](https://discuss.circleci.com/c/ecosystem/circleci-images).
 
-
 ## Additional Resources
 
 [CircleCI Docs](https://circleci.com/docs/) - The official CircleCI Documentation website.
 [CircleCI Configuration Reference](https://circleci.com/docs/2.0/configuration-reference/#section=configuration) - From CircleCI Docs, the configuration reference page is one of the most useful pages we have.
 It will list all of the keys and values supported in `.circleci/config.yml`.
 [Docker Docs](https://docs.docker.com/) - For simple projects this won't be needed but if you want to dive deeper into learning Docker, this is a great resource.
-
 
 ## License
 
