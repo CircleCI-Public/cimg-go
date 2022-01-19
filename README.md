@@ -1,14 +1,14 @@
 <div align="center">
 	<p>
-		<img alt="CircleCI Logo" src="https://raw.github.com/CircleCI-Public/cimg-go/master/img/circle-circleci.svg?sanitize=true" width="75" />
-		<img alt="Docker Logo" src="https://raw.github.com/CircleCI-Public/cimg-go/master/img/circle-docker.svg?sanitize=true" width="75" />
-		<img alt="Go Logo" src="https://raw.github.com/CircleCI-Public/cimg-go/master/img/circle-go.svg?sanitize=true" width="75" />
+		<img alt="CircleCI Logo" src="https://raw.github.com/CircleCI-Public/cimg-go/main/img/circle-circleci.svg?sanitize=true" width="75" />
+		<img alt="Docker Logo" src="https://raw.github.com/CircleCI-Public/cimg-go/main/img/circle-docker.svg?sanitize=true" width="75" />
+		<img alt="Go Logo" src="https://raw.github.com/CircleCI-Public/cimg-go/main/img/circle-go.svg?sanitize=true" width="75" />
 	</p>
 	<h1>CircleCI Convenience Images => Go</h1>
 	<h3>A Continuous Integration focused Go Docker image built to run on CircleCI</h3>
 </div>
 
-[![CircleCI Build Status](https://circleci.com/gh/CircleCI-Public/cimg-go.svg?style=shield)](https://circleci.com/gh/CircleCI-Public/cimg-go) [![Software License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/CircleCI-Public/cimg-go/master/LICENSE) [![Docker Pulls](https://img.shields.io/docker/pulls/cimg/go)](https://hub.docker.com/r/cimg/go) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/circleci-images) [![Repository](https://img.shields.io/badge/github-README-brightgreen)](https://github.com/CircleCI-Public/cimg-go)
+[![CircleCI Build Status](https://circleci.com/gh/CircleCI-Public/cimg-go.svg?style=shield)](https://circleci.com/gh/CircleCI-Public/cimg-go) [![Software License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/CircleCI-Public/cimg-go/main/LICENSE) [![Docker Pulls](https://img.shields.io/docker/pulls/cimg/go)](https://hub.docker.com/r/cimg/go) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/circleci-images) [![Repository](https://img.shields.io/badge/github-README-brightgreen)](https://github.com/CircleCI-Public/cimg-go)
 
 **_This image is designed to supercede the legacy CircleCI Go image, `circleci/golang`._**
 
@@ -190,7 +190,7 @@ All that would need to be done after that is:
 - review the PR
 - merge the PR
 
-The master branch build will then publish a release.
+The main branch build will then publish a release.
 
 ### Incorporating Changes
 
