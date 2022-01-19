@@ -10,6 +10,7 @@ else
     docker buildx install
     docker build \
         --build-arg CIMGBASETAG=${CIMGBASETAG} \
+        --build-arg GO_VERSION=${GOVERSION} \
         --platform linux/amd64,linux/arm64 \
         --push \
         --file 1.17/Dockerfile \
