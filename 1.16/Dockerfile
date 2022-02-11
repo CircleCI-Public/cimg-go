@@ -1,10 +1,12 @@
 # vim:set ft=dockerfile:
 
+# Do not edit individual Dockerfiles manually. Instead, please make changes to the Dockerfile.template, which will be used by the build script to generate Dockerfiles.
+
 FROM cimg/base:2022.01
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VERSION=1.16.13
+ENV GO_VERSION=1.16.14
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
@@ -14,8 +16,12 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
 
-RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v1.7.0/gotestsum_1.7.0_linux_amd64.tar.gz" | \
-	sudo tar -xz -C /usr/local/bin gotestsum
+# Install related tools
+ENV GOTESTSUM_V=1.7.0
+ENV GOCI_LINT_V=1.43.0
+RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${GOTESTSUM_V}/gotestsum_${GOTESTSUM_V}_linux_amd64.tar.gz" | \
+	sudo tar -xz -C /usr/local/bin gotestsum && \
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b /usr/local/bin v${GOCI_LINT_V}
 
 ENV GOPATH /home/circleci/go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
