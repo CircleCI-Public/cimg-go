@@ -4,3 +4,6 @@ repository=go
 parent=base
 variants=(node browsers)
 namespace=cimg
+parentTags=(18.04 20.04)
+defaultParentTag=20.04
+parentSlug=ubuntu
