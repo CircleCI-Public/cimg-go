@@ -18,7 +18,7 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 
 # Install related tools
 ENV GOTESTSUM_V=1.7.0
-ENV GOCI_LINT_V=1.43.0
+ENV GOCI_LINT_V=1.45.2
 RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${GOTESTSUM_V}/gotestsum_${GOTESTSUM_V}_linux_amd64.tar.gz" | \
 	sudo tar -xz -C /usr/local/bin gotestsum && \
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b /usr/local/bin v${GOCI_LINT_V}
