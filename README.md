@@ -19,6 +19,7 @@ Each tag contains a complete Go version and toolchain, the testing wrapper `gote
 
 - [Getting Started](#getting-started)
 - [How This Image Works](#how-this-image-works)
+  - [Changes From Legacy Image](#changes-from-legacy-image)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Additional Resources](#additional-resources)
@@ -47,6 +48,14 @@ You can now use Go within the steps for this job.
 
 This image contains the Go programming language and its complete toolchain.
 This includes support for Go modules, the official Go Proxy Server, etc.
+
+### Changes From Legacy Image
+
+If you're coming from the legacy version of this image, `circleci/golang`, here's any changes that you might want to be aware of:
+
+- `GOPATH` - this envar has changed from `/go` to `$HOME/go`.
+The latter will expand to the full path of `/home/circleci/go`.
+On first run, this change may affect caching and some other commands if you don’t correct the page in your config.
 
 ### Variants
 
