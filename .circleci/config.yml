@@ -9,4 +9,12 @@ workflows:
     jobs:
       - cimg-orb/build-and-deploy:
           working-dir: ./
+          publish-branch: main
+  update-readme:
+    when:
+      equal: [main, << pipeline.git.branch >>]
+    jobs:
+      - sonar/update-readme:
+          version: "0.15.0"
+          image: cimg/go
           context: cimg-publishing
