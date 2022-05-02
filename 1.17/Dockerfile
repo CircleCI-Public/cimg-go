@@ -15,6 +15,7 @@ LABEL maintainer="Community & Partner Engineering Team <community-partner@circle
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+		qemu-user-static \
 		g++ \
 		libc6-dev && \
 	sudo rm -rf /var/lib/apt/lists/* && \
