@@ -12,7 +12,7 @@ jobs:
         type: boolean
         default: false
     machine:
-      image: ubuntu-1604:202007-01
+      image: ubuntu-2004:202201-02
     environment:
       CIMGBASETAG: << pipeline.parameters.cimg-base-tag >>
       DOCKER_BUILDKIT: 1
