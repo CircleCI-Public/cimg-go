@@ -10,6 +10,7 @@ workflows:
       - cimg-orb/build-and-deploy:
           working-dir: ./
           publish-branch: main
+          image: cimg/go
   update-readme:
     when:
       equal: [main, << pipeline.git.branch >>]
