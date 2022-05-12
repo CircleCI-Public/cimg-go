@@ -11,6 +11,7 @@ workflows:
           working-dir: ./
           publish-branch: main
           image: cimg/go
+          context: cimg-publishing
   update-readme:
     when:
       equal: [main, << pipeline.git.branch >>]
