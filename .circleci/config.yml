@@ -9,4 +9,5 @@ workflows:
     jobs:
       - cimg-orb/build-and-deploy:
           image: cimg/go
+          working-dir: ./
           context: cimg-publishing
