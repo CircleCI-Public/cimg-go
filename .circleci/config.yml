@@ -7,28 +7,6 @@ orbs:
 workflows:
   main:
     jobs:
-      - build-and-deploy:
-          context: cimg-publishing
-
-jobs:
-  build-and-deploy:
-    docker:
-      - image: cimg/base:2022.04
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: "20.10.12"
-      - cimg-orb/build-images:
-          working-dir: ./
-      - cimg-orb/push-images:
-          working-dir: ./
-          publish-branch: main
+      - cimg-orb/build-and-deploy:
           image: cimg/go
-      - when:
-          condition:
-            equal: [main, << pipeline.git.branch >>]
-          steps:
-          - sonar/install:
-              version: "0.15.0"
-          - sonar/update-readme:
-              image: cimg/go
+          context: cimg-publishing
