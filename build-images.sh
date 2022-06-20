@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-GOVERSION=1.17.9
+GOVERSION=1.17.11
 DOCKERIMAGE=arangodboasis/cimg-go:${GOVERSION}-${CIRCLE_TAG:-$CIRCLE_BRANCH-$CIRCLE_SHA1}
 echo Building ${DOCKERIMAGE}
 
