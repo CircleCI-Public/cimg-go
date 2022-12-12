@@ -1,12 +1,26 @@
 version: 2.1
 
 orbs:
-  sonar: hubci/sonar@1.0.0
-  cimg-orb: circleci/cimg-orb@0.1.4
+  cimg: circleci/cimg@0.3.0
 
 workflows:
-  main:
+  main-wf:
     jobs:
-      - cimg-orb/build-and-deploy:
-          image: cimg/go
+      - cimg/build-and-deploy:
+          name: "Staging"
+          docker-namespace: ccitest
+          docker-repository: golang
+          publish-branch: test
+          filters:
+            branches:
+              ignore:
+                - main
+          context: cimg-publishing
+      - cimg/build-and-deploy:
+          name: "Deploy"
+          docker-repository: go
+          filters:
+            branches:
+              only:
+                - main
           context: cimg-publishing
