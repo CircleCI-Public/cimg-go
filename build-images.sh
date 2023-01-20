@@ -13,6 +13,6 @@ else
         --build-arg GO_VERSION=${GOVERSION} \
         --platform linux/amd64,linux/arm64 \
         --push \
-        --file 1.17/Dockerfile \
+        --file 1.19/Dockerfile \
         -t ${DOCKERIMAGE} .
 fi
