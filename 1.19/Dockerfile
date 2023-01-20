@@ -27,10 +27,10 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	libc6-dev && \
 	sudo rm -rf /var/lib/apt/lists/* && \
 	# Check if we're facing the first minor release issue and adjust if needed
-	if [[ ${GO_VER:(-2)} == ".0" ]]; then \
-	GO_VER=${GO_VER:0:-2}; \
+	if [[ ${GO_VERSION:(-2)} == ".0" ]]; then \
+	GO_VERSION=${GO_VERSION:0:-2}; \
 	fi && \
-	curl -sSL "https://golang.org/dl/go${GO_VER}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
+	curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
 
 # Install related tools
