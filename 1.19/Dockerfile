@@ -7,20 +7,28 @@
 # October.
 
 # NOTE: The base image uses November due to a OpenSSL CVE. Will resume using quarterly images in Q1
-FROM cimg/base:2022.11
+# FROM cimg/base:2022.11
+# Oasis added begin
+ARG CIMGBASETAG
+FROM arangodboasis/cimg-base:${CIMGBASETAG}
+
+ARG TARGETPLATFORM
+ARG TARGETARCH
+ARG GO_VERSION
+# Oasis added end
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VER="1.19.5"
+# ENV GO_VER="1.19.5"
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-		g++ \
-		libc6-dev && \
+	g++ \
+	libc6-dev && \
 	sudo rm -rf /var/lib/apt/lists/* && \
 	# Check if we're facing the first minor release issue and adjust if needed
 	if [[ ${GO_VER:(-2)} == ".0" ]]; then \
-	  GO_VER=${GO_VER:0:-2}; \
+	GO_VER=${GO_VER:0:-2}; \
 	fi && \
 	curl -sSL "https://golang.org/dl/go${GO_VER}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
