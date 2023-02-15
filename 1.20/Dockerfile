@@ -5,11 +5,19 @@
 # By policy, the base image tag should be a quarterly tag unless there's a
 # specific reason to use a different one. This means January, April, July, or
 # October.
+<<<<<<< HEAD
 FROM cimg/base:2023.07
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
 ENV GO_VER="1.20.8"
+=======
+FROM cimg/base:2023.01
+
+LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
+
+ENV GO_VER="1.20.1"
+>>>>>>> 6a878e9 (Publish v1.20.1 and v1.19.6. [release])
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \

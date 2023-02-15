@@ -1,6 +1,10 @@
 # vim:set ft=dockerfile:
 
+<<<<<<< HEAD
 FROM cimg/go:1.20.8-node
+=======
+FROM cimg/go:1.20.1-node
+>>>>>>> 6a878e9 (Publish v1.20.1 and v1.19.6. [release])
 
 LABEL maintainer="CircleCI Community & Partner Engineering Team <community-partner@circleci.com>"
 
