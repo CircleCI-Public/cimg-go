@@ -60,7 +60,7 @@ vereq() {
 vergte() {
   local paramVariable=$3
   if [ "$(printf '%s\n' "$1" "$2" | sort -V | head -n1)" = "$2" ]; then
-    echo "Parsed version $1 is greater than $2" && \
+    echo "Parsed version $1 is greater than $2"
     if [ -n "${paramVariable}" ]; then
       case $3 in
       lts)
@@ -76,6 +76,8 @@ vergte() {
         vers+=( "$1" )
         ;;
       esac
+    else
+      vers+=( "$1" )
     fi
   else
     echo "Parsed version $1 is not greater than $2"
@@ -84,7 +86,7 @@ vergte() {
 
 newVers() {
   local paramVariable=$2
-  echo "directory does not exist; $1 is a new version" && \
+  echo "directory does not exist; $1 is a new version"
   if [ -n "${paramVariable}" ]; then
     case $paramVariable in
       lts)
@@ -99,6 +101,8 @@ newVers() {
       *)
         vers+=( "$1" )
     esac
+  else
+      vers+=( "$1" )
   fi
 }
 
@@ -349,7 +353,6 @@ getCleanVersion () {
 
 buildParameter() {
   if [ -n "$EXTRA_PARAM" ]; then
-  # use case for different params
     case $CIRCLE_PROJECT_REPONAME in
       *cimg-node*)
         case $newVersion in
