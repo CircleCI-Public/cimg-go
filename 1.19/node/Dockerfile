@@ -1,10 +1,14 @@
 # vim:set ft=dockerfile:
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 FROM cimg/go:1.19.13
 =======
 FROM cimg/go:1.19.6
 >>>>>>> 6a878e9 (Publish v1.20.1 and v1.19.6. [release])
+=======
+FROM cimg/go:1.19.7
+>>>>>>> 973b590 (Publish v1.20.2 and v1.19.7. [release])
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
