@@ -20,7 +20,7 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	if [[ ${GO_VER:(-2)} == ".0" ]]; then \
 	  GO_VER=${GO_VER:0:-2}; \
 	fi && \
-	curl -sSL "https://golang.org/dl/go${GO_VER}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
+	curl -sSL "https://go.dev/dl/go${GO_VER}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
 
 # Install related tools
