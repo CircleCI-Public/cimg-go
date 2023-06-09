@@ -15,6 +15,10 @@
 `cimg/go` is a Docker image created by CircleCI with continuous integration builds in mind.
 Each tag contains a complete Go version and toolchain, the testing wrapper `gotestsum`, and any binaries and tools that are required for builds to complete successfully in a CircleCI environment.
 
+## Support Policy
+
+The CircleCI Docker Convenience Image support policy can be found on the [CircleCI docs](https://circleci.com/docs/convenience-images-support-policy) site. This policy outlines the release, update, and deprecation policy for CircleCI Docker Convenience Images.
+
 ## Table of Contents
 
 - [Getting Started](#getting-started)
@@ -240,11 +244,9 @@ Don't forget that to see any of these changes locally, the `gen-dockerfiles.sh` 
 
 ## Contributing
 
-We encourage [issues](https://github.com/CircleCI-Public/cimg-go/issues) and [pull requests](https://github.com/CircleCI-Public/cimg-go/pulls) against this repository. In order to value your time, here are some things to consider:
+We encourage [issues](https://github.com/CircleCI-Public/cimg-go/issues) and [pull requests](https://github.com/CircleCI-Public/cimg-go/pulls) against this repository.
 
-1. We won't include just anything in this image. In order for us to add a tool within the Go image, it has to be something that is maintained and useful to a large number of Gophers (Go developers). Every tool added makes the image larger and slower for all users so being thorough on what goes in the image will benefit everyone.
-1. PRs are welcome. If you have a PR that will potentially take a large amount of time to make, it will be better to open an issue to discuss it first to make sure it's something worth investing the time in.
-1. Issues should be used to report bugs or request additional/removal of tools in this image. For help with images, please visit [CircleCI Discuss](https://discuss.circleci.com/c/ecosystem/circleci-images).
+Please check out our [contributing guide](.github/CONTRIBUTING.md) which outlines best practices for contributions and what you can expect from the images team at CircleCI.
 
 ## Additional Resources
 
