@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -eo pipefail
 # Do not edit by hand; please use build scripts/templates to make changes
 
 docker context create cimg
