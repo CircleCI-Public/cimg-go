@@ -9,7 +9,7 @@ FROM cimg/base:2023.04
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VER="1.19.10"
+ENV GO_VER="1.19.11"
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
@@ -24,8 +24,8 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	mkdir -p /home/circleci/go/bin
 
 # Install related tools
-ENV GOTESTSUM_V=1.10.0
-ENV GOCI_LINT_V=1.53.2
+ENV GOTESTSUM_V=1.10.1
+ENV GOCI_LINT_V=1.53.3
 RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${GOTESTSUM_V}/gotestsum_${GOTESTSUM_V}_linux_amd64.tar.gz" | \
 	sudo tar -xz -C /usr/local/bin gotestsum && \
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b /usr/local/bin v${GOCI_LINT_V}
