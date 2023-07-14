@@ -21,7 +21,7 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	  GO_VER=${GO_VER:0:-2}; \
 	fi && \
 	[[ $(uname -m) == "x86_64" ]] && ARCH="amd64" || ARCH="arm64" && \
-	curl -sSL "https://go.dev/dl/go${GO_VER}.linux-${ARCH}.tar.gz" | tar -xz -C /usr/local/ && \
+	curl -sSL "https://go.dev/dl/go${GO_VER}.linux-${ARCH}.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
 
 # Install related tools
