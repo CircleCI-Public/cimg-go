@@ -23,6 +23,9 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	curl -sSL "https://go.dev/dl/go${GO_VER}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
 
+ENV GOPATH /home/circleci/go
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
 # Install related tools
 ENV GOTESTSUM_V=1.10.1
 ENV GOCI_LINT_V=1.53.3
@@ -30,14 +33,9 @@ RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${
 	sudo tar -xz -C /usr/local/bin gotestsum && \
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b /usr/local/bin v${GOCI_LINT_V}
 
-ENV GOPATH /home/circleci/go
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
-
-# Install govulncheck on a temporary stage to ensure minimal size footprint
-# by copying to output layer just the govulncheck binary
-FROM base AS govulncheck
 ENV GOVULNCHECK_V=1.0.0
-RUN go install "golang.org/x/vuln/cmd/govulncheck@v${GOVULNCHECK_V}"
-
-FROM base
-COPY --from=govulncheck "${GOPATH}/bin/govulncheck" /usr/local/bin
+RUN if [[ "${GO_VER}" != 1.17* ]]; then \
+		go install "golang.org/x/vuln/cmd/govulncheck@v${GOVULNCHECK_V}"; \
+		go clean -cache -modcache; \
+		rm -rf "${GOPATH}/pkg"; \
+	fi
