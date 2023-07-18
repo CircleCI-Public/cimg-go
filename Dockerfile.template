@@ -36,8 +36,7 @@ ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 # Install govulncheck on a temporary stage to ensure minimal size footprint
 # by copying to output layer just the govulncheck binary
 FROM base AS govulncheck
-ENV GOVULNCHECK_V=1.0.0
-RUN go install "golang.org/x/vuln/cmd/govulncheck@v${GOVULNCHECK_V}"
+RUN go install "golang.org/x/vuln/cmd/govulncheck@latest"
 
 FROM base
 COPY --from=govulncheck "${GOPATH}/bin/govulncheck" /usr/local/bin
