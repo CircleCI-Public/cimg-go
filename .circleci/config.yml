@@ -36,6 +36,10 @@ workflows:
                 event: pass
                 mentions: "@jalexchen"
                 template: basic_success_1
+            - run:
+                command: docker images --digests
+            - run:
+                command: docker manifest inspect --verbose ccitest/go:1.19.11
           context: cimg-publishing
       - cimg/build-and-deploy:
           name: "Deploy"
