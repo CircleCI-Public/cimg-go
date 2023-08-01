@@ -4,6 +4,7 @@ orbs:
   cimg: circleci/cimg@0.3.3
   slack: circleci/slack@4.12.1
   gh: circleci/github-cli@2.2.0
+  aws: circleci/aws-cli@4.0.0
 
 parameters:
   cron:
@@ -18,8 +19,7 @@ workflows:
             context:
               - cimg-publishing
   main-wf:
-    when:
-      not: << pipeline.parameters.cron >>
+    when: << pipeline.parameters.cron >>
     jobs:
       - cimg/build-and-deploy:
           name: "Staging"
@@ -51,6 +51,9 @@ workflows:
                 mentions: "@images"
                 template: basic_fail_1
           context: cimg-publishing
+  docker-wf:
+    jobs:
+      - aws-ecr
 
 jobs:
   check-feed:
@@ -95,3 +98,70 @@ jobs:
             sudo chmod +x goFeed.sh
             git submodule update --init --recursive
             ./goFeed.sh
+  aws-ecr-write:
+    docker:
+      - image: cimg/aws:2023.07.1
+    environment:
+      CCIDEV_AWS_DEFAULT_REGION: us-east-1
+    steps:
+      - checkout
+      - aws-cli/setup:
+          region: CCIDEV_AWS_DEFAULT_REGION
+      # set up aws read/write roles. only have the full read/write at the moment
+      - aws-cli/assume_role_with_web_identity:
+          role_arn: arn:aws:iam::$AWS_ID:role/cpe-ecr-write
+          role_session_name: "push-to-ecr"
+      - cimg/build-images:
+          docker-namespace: "$AWS_ID.dkr.ecr.$CCIDEV_AWS_DEFAULT_REGION.amazonaws.com"
+          docker-repository: go
+          publish-branch: test
+          filters:
+            branches:
+              ignore:
+                - main
+  aws-ecr-read:
+    docker:
+      - image: cimg/aws:2023.07.1
+    environment:
+      CCIDEV_AWS_DEFAULT_REGION: us-east-1
+    steps:
+      - checkout
+      - aws-cli/setup:
+          region: CCIDEV_AWS_DEFAULT_REGION
+      - aws-cli/assume_role_with_web_identity:
+          role_arn: arn:aws:iam::$AWS_ID:role/cpe-ecr-write
+          role_session_name: "pull-from-ecr"
+      - run:
+          command: |
+            curl -L https://github.com/regclient/regclient/releases/latest/download/regctl-linux-amd64 >regctl
+            sudo chmod 755 regctl
+            sudo mv regctl /usr/local/bin/
+      - run:
+          name: sign into ecr and docker
+          command: |
+            # log in to docker
+            echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
+
+            # placeholder to see if oidc grants us permissions without needing the following command
+            # aws ecr get-login-password --region $CCIDEV_AWS_DEFAULT_REGION \
+            #| docker login --username AWS --password-stdin $AWS_ID.dkr.ecr.$CCIDEV_AWS_DEFAULT_REGION.amazonaws.com
+      - run:
+          name: Get list of all tags that were pushed; or get all tags associated with digest
+          command: |
+            mkdir -p /tmp/registry
+            source GEN-CHECK
+            tagList=("$(regctl tag ls $AWS_ID.dkr.ecr.$CCIDEV_AWS_DEFAULT_REGION.amazonaws.com/cimg2)")
+            for tag in "${GEN_CHECK[@]}"; do
+              cleanTag=${tag%#*}
+
+              for registryTag in ${tagList[*]}; do
+                if [[ "$registryTag" =~ $cleanTag ]]; then
+                  manifestFile=$(docker buildx imagetools inspect $AWS_ID.dkr.ecr.$CCIDEV_AWS_DEFAULT_REGION.amazonaws.com/cimg2:"${registryTag}" --format "{{json .Manifest}}")
+                  echo "$manifestFile" > "/tmp/registry/$registryTag-manifest.json"
+                fi
+              done
+            done
+      - run:
+          name: deploy
+          command: |
+            decrypt file, get manifest by tag (read only), compare digests, then copy to cimg dockerhub
