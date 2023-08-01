@@ -53,7 +53,12 @@ workflows:
           context: cimg-publishing
   docker-wf:
     jobs:
-      - aws-ecr
+      - aws-ecr-write:
+          context: cimg-publishing
+      - aws-ecr-read:
+          requires:
+            - aws-ecr-write
+          context: cimg-publishing
 
 jobs:
   check-feed:
@@ -161,7 +166,3 @@ jobs:
                 fi
               done
             done
-      - run:
-          name: deploy
-          command: |
-            decrypt file, get manifest by tag (read only), compare digests, then copy to cimg dockerhub
