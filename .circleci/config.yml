@@ -4,7 +4,7 @@ orbs:
   cimg: circleci/cimg@0.3.3
   slack: circleci/slack@4.12.1
   gh: circleci/github-cli@2.2.0
-  aws: circleci/aws-cli@4.0.0
+  aws-cli: circleci/aws-cli@4.0.0
 
 parameters:
   cron:
@@ -120,10 +120,6 @@ jobs:
           docker-namespace: "$AWS_ID.dkr.ecr.$CCIDEV_AWS_DEFAULT_REGION.amazonaws.com"
           docker-repository: go
           publish-branch: test
-          filters:
-            branches:
-              ignore:
-                - main
   aws-ecr-read:
     docker:
       - image: cimg/aws:2023.07.1
