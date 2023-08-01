@@ -116,6 +116,9 @@ jobs:
       - aws-cli/assume_role_with_web_identity:
           role_arn: arn:aws:iam::$AWS_ID:role/cpe-ecr-write
           role_session_name: "push-to-ecr"
+      - run:
+          command: |
+            aws ecr get-login-password --region $CCIDEV_AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ID.dkr.ecr.$CCIDEV_AWS_DEFAULT_REGION.amazonaws.com
       - cimg/build-images:
           docker-namespace: "$AWS_ID.dkr.ecr.$CCIDEV_AWS_DEFAULT_REGION.amazonaws.com"
           docker-repository: go
@@ -144,8 +147,7 @@ jobs:
             echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
 
             # placeholder to see if oidc grants us permissions without needing the following command
-            # aws ecr get-login-password --region $CCIDEV_AWS_DEFAULT_REGION \
-            #| docker login --username AWS --password-stdin $AWS_ID.dkr.ecr.$CCIDEV_AWS_DEFAULT_REGION.amazonaws.com
+            aws ecr get-login-password --region $CCIDEV_AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ID.dkr.ecr.$CCIDEV_AWS_DEFAULT_REGION.amazonaws.com
       - run:
           name: Get list of all tags that were pushed; or get all tags associated with digest
           command: |
