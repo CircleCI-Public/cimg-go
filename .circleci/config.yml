@@ -110,8 +110,6 @@ jobs:
       - checkout
       - aws-cli/setup:
           region: us-east-1
-      # set up aws read/write roles. only have the full read/write at the moment
-      # - aws-cli/assume_role_with_web_identity:
           role_arn: arn:aws:iam::483285841698:role/cpe-ecr-write
           role_session_name: "push-to-ecr"
       - run:
@@ -128,7 +126,6 @@ jobs:
       - checkout
       - aws-cli/setup:
           region: us-east-1
-      # - aws-cli/assume_role_with_web_identity:
           role_arn: arn:aws:iam::483285841698:role/cpe-ecr-write
           role_session_name: "pull-from-ecr"
       - run:
