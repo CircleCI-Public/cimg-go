@@ -13,11 +13,11 @@ parameters:
 
 workflows:
   automated-wf:
-      when: << pipeline.parameters.cron >>
-      jobs:
-        - check-feed:
-            context:
-              - cimg-publishing
+    when: << pipeline.parameters.cron >>
+    jobs:
+      - check-feed:
+          context:
+            - cimg-publishing
   main-wf:
     when: << pipeline.parameters.cron >>
     jobs:
@@ -103,6 +103,7 @@ jobs:
             sudo chmod +x goFeed.sh
             git submodule update --init --recursive
             ./goFeed.sh
+
   aws-ecr-write:
     docker:
       - image: cimg/aws:2023.07.1
@@ -119,6 +120,7 @@ jobs:
           docker-namespace: "483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
           docker-repository: go
           publish-branch: test
+
   aws-ecr-read:
     docker:
       - image: cimg/aws:2023.07.1
@@ -147,14 +149,16 @@ jobs:
           command: |
             mkdir -p /tmp/registry
             source GEN-CHECK
-            tagList=("$(regctl tag ls 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/cimg2)")
+            tagList=("$(regctl tag ls 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/go)")
             for tag in "${GEN_CHECK[@]}"; do
               cleanTag=${tag%#*}
 
               for registryTag in ${tagList[*]}; do
                 if [[ "$registryTag" =~ $cleanTag ]]; then
-                  manifestFile=$(docker buildx imagetools inspect 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/cimg2:"${registryTag}" --format "{{json .Manifest}}")
+                  manifestFile=$(docker buildx imagetools inspect 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/go:"${registryTag}" --format "{{json .Manifest}}")
                   echo "$manifestFile" > "/tmp/registry/$registryTag-manifest.json"
                 fi
               done
             done
+      - store_artifacts:
+          path: /tmp/registry
