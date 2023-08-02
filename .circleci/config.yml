@@ -108,6 +108,7 @@ jobs:
       - image: cimg/aws:2023.07.1
     steps:
       - checkout
+      - setup_remote_docker
       - aws-cli/setup:
           role_arn: arn:aws:iam::483285841698:role/cpe-ecr-write
           role_session_name: "push-to-ecr"
@@ -123,6 +124,7 @@ jobs:
       - image: cimg/aws:2023.07.1
     steps:
       - checkout
+      - setup_remote_docker
       - aws-cli/setup:
           region: $AWS_DEFAULT_REGION
           role_arn: arn:aws:iam::483285841698:role/cpe-ecr-write
