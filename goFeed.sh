@@ -9,6 +9,21 @@ else
   exit 1
 fi
 
+getGoVulnCheck() {
+  local templateFile=$1
+
+  RSS_URL="https://github.com/golang/vuln/tags.atom"
+  VERSIONS=$(curl --silent "$RSS_URL" | grep -E '(title)' | tail -n +2 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' | tr -d ':')
+
+  for version in $VERSIONS; do
+    if [[ $version =~ ^v[0-9]+(\.[0-9]+)*$ ]]; then
+      generateVersions "$(cut -d "v" -f2 <<< "${version}")"
+      generateSearchTerms "GOVULNCHECK_V=" "$templateFile"
+      replaceVersions "GOVULNCHECK_V=" "$SEARCH_TERM" "true"
+    fi
+  done
+}
+
 getGoTestSum() {
   local templateFile=$1
 
@@ -45,6 +60,9 @@ getGoVersion() {
 
   echo "Getting Go Lint Versions..."
   getGoCILint "Dockerfile.template"
+
+  echo "Getting Go Vuln Check Versions..."
+  getGoVulnCheck "Dockerfile.template"
 
   RSS_URL="https://github.com/golang/go/tags.atom"
   VERSIONS=$(curl --silent "$RSS_URL" | grep -E '(title)' | tail -n +2 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//')
