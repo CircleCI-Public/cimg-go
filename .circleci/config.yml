@@ -139,10 +139,7 @@ jobs:
       - run:
           name: sign into ecr and docker
           command: |
-            # log in to docker
             echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
-
-            # placeholder to see if oidc grants us permissions without needing the following command
             aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - run:
           name: Get list of all tags that were pushed; or get all tags associated with digest
