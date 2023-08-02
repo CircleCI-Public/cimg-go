@@ -109,14 +109,13 @@ jobs:
     steps:
       - checkout
       - aws-cli/setup:
-          region: us-east-1
           role_arn: arn:aws:iam::483285841698:role/cpe-ecr-write
           role_session_name: "push-to-ecr"
       - run:
           command: |
-            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 483285841698.dkr.ecr.us-east-1.amazonaws.com
+            aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - cimg/build-images:
-          docker-namespace: "483285841698.dkr.ecr.us-east-1.amazonaws.com"
+          docker-namespace: "483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
           docker-repository: go
           publish-branch: test
   aws-ecr-read:
@@ -125,7 +124,7 @@ jobs:
     steps:
       - checkout
       - aws-cli/setup:
-          region: us-east-1
+          region: $AWS_DEFAULT_REGION
           role_arn: arn:aws:iam::483285841698:role/cpe-ecr-write
           role_session_name: "pull-from-ecr"
       - run:
@@ -140,19 +139,19 @@ jobs:
             echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
 
             # placeholder to see if oidc grants us permissions without needing the following command
-            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 483285841698.dkr.ecr.us-east-1.amazonaws.com
+            aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - run:
           name: Get list of all tags that were pushed; or get all tags associated with digest
           command: |
             mkdir -p /tmp/registry
             source GEN-CHECK
-            tagList=("$(regctl tag ls 483285841698.dkr.ecr.us-east-1.amazonaws.com/cimg2)")
+            tagList=("$(regctl tag ls 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/cimg2)")
             for tag in "${GEN_CHECK[@]}"; do
               cleanTag=${tag%#*}
 
               for registryTag in ${tagList[*]}; do
                 if [[ "$registryTag" =~ $cleanTag ]]; then
-                  manifestFile=$(docker buildx imagetools inspect 483285841698.dkr.ecr.us-east-1.amazonaws.com/cimg2:"${registryTag}" --format "{{json .Manifest}}")
+                  manifestFile=$(docker buildx imagetools inspect 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/cimg2:"${registryTag}" --format "{{json .Manifest}}")
                   echo "$manifestFile" > "/tmp/registry/$registryTag-manifest.json"
                 fi
               done
