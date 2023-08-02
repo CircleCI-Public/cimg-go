@@ -24,7 +24,7 @@ workflows:
       - cimg/build-and-deploy:
           name: "Staging"
           docker-namespace: ccitest
-          docker-repository: golang
+          docker-repository: go
           publish-branch: test
           filters:
             branches:
