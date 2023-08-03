@@ -137,21 +137,23 @@ jobs:
             sudo chmod 755 regctl
             sudo mv regctl /usr/local/bin/
       - run:
-          name: sign into ecr and docker
+          name: Sign into ECR
           command: |
-            echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
             aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - run:
-          name: Get list of all tags that were pushed; or get all tags associated with digest
+          name: Retrieve and save digests associated with pushed tags
           command: |
             mkdir -p /tmp/registry
             source GEN-CHECK
             tagList=("$(regctl tag ls 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/go)")
             for tag in "${GEN_CHECK[@]}"; do
-              cleanTag=${tag%#*}
+              tag=${tag%#*}
+              cleanTag=${tag%.*}
 
               for registryTag in ${tagList[*]}; do
-                if [[ "$registryTag" =~ $cleanTag ]]; then
+                if ! [[ "$registryTag" =~ $cleanTag ]]; then
+                  continue
+                else
                   manifestFile=$(docker buildx imagetools inspect 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/go:"${registryTag}" --format "{{json .Manifest}}")
                   echo "$manifestFile" > "/tmp/registry/$registryTag-manifest.json"
                 fi
