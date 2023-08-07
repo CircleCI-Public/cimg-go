@@ -171,7 +171,8 @@ jobs:
 
             echo "{}" > /tmp/registry/metadata.json
             for file in /tmp/registry/*-manifest.json; do
-              tag=${file%-*}
+              dirtyTag=${file%-*}
+              tag=$(echo $dirtyTag | cut -d / -f4)
               jq --arg tag "$tag" --slurpfile input "$file" '. += { ($tag): $input }' /tmp/registry/metadata.json > tmp.json && mv tmp.json /tmp/registry/metadata.json
             done
 
