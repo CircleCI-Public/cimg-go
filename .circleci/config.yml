@@ -220,6 +220,7 @@ jobs:
               if ! [[ $comparisonSHA == $registrySHA ]]; then
                 echo "metadata.json $tag: $comparisonSHA \n
                 registry $tag: $registrySHA" >> noMatch.txt
+              fi
             done
 
             if [[ -z $check ]]; then
