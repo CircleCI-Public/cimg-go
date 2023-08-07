@@ -65,7 +65,7 @@ workflows:
             - aws-ecr-read
           context: cimg-publishing
       - copy:
-          requiers:
+          requires:
             - verify
           context: cimg-publishing
 
@@ -262,4 +262,3 @@ jobs:
             for tag in $tagList; do
               regctl image copy 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/go:${tag} ferriswh33l/node-dev:${tag}
             done
-      
