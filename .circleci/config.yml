@@ -1,7 +1,8 @@
 version: 2.1
 
 orbs:
-  cimg: circleci/cimg@0.3.3
+  # cimg: circleci/cimg@0.3.3
+  cimg: circleci/cimg@dev:08bf03048fedc04c38b6557e4878b5bad26dcf12
   slack: circleci/slack@4.12.1
   gh: circleci/github-cli@2.2.0
   aws-cli: circleci/aws-cli@4.0.0
@@ -159,5 +160,19 @@ jobs:
                 fi
               done
             done
+
+            echo "{}" > /tmp/registry/metadata.json
+            for file in /tmp/registry/*-manifest.json; do
+              tag=${file%-*}
+              jq --arg tag "$tag" --slurpfile input "$file" '. += { ($tag): $input }' /tmp/registry/metadata.json > tmp.json && mv tmp.json /tmp/registry/metadata.json
+            done
+
+            rm tmp.json
       - store_artifacts:
           path: /tmp/registry
+
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - "registry/*-manifest.json"
+            - "registry/metadata.json"
