@@ -179,10 +179,10 @@ jobs:
           path: /tmp/registry
 
       - persist_to_workspace:
-          root: /tmp
+          root: /tmp/registry
           paths:
-            - "registry/*-manifest.json"
-            - "registry/metadata.json"
+            - "*-manifest.json"
+            - "metadata.json"
 
   verify:
     docker:
