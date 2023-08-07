@@ -176,3 +176,48 @@ jobs:
           paths:
             - "registry/*-manifest.json"
             - "registry/metadata.json"
+
+  verify-and-copy:
+    docker:
+      - image: cimg/aws:2023.07.1
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/registry
+      - setup_remote_docker
+      - aws-cli/setup:
+          region: $AWS_DEFAULT_REGION
+          role_arn: arn:aws:iam::483285841698:role/cpe-ecr-write
+          role_session_name: "pull-and-verify"
+      - run:
+          name: Download regctl
+          command: |
+            curl -L https://github.com/regclient/regclient/releases/latest/download/regctl-linux-amd64 >regctl
+            sudo chmod 755 regctl
+            sudo mv regctl /usr/local/bin/
+      - run:
+          name: Sign into ECR
+          command: |
+            aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - run:
+          name: Verify digests
+          command: |
+            touch noMatch.txt
+            check=$(cat nomatch.txt)
+            tagList=$(jq -r 'keys[]' /tmp/registry/metadata.json)
+
+            for tag in $tagList; do
+              comparisonSHA=$(jq -r ".[\"$tag\"][0].digest" /tmp/registry/metadata.json)
+              registrySHA=$(regctl image digest 483285841698.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/go:"${tag}")
+
+              if ! [[ $comparisonSHA == $registrySHA ]]; then
+                echo "metadata.json $tag: $comparisonSHA \n
+                registry $tag: $registrySHA" >> noMatch.txt
+            done
+
+            if [[ -z $check ]]; then
+              echo "All digest checks passed"
+            else
+              echo "Please check noMatch.txt. There are digests that do not match"
+              exit 1
+            fi
