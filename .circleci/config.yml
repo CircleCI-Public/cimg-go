@@ -285,6 +285,7 @@ jobs:
               exit 1
             else
               echo "Manifest check succeeded"
+            fi
       # - run:
       #     name: Sign Images
       #     command: |
