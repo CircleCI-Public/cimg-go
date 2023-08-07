@@ -177,7 +177,7 @@ jobs:
             - "registry/*-manifest.json"
             - "registry/metadata.json"
 
-  verify-and-copy:
+  verify:
     docker:
       - image: cimg/aws:2023.07.1
     steps:
