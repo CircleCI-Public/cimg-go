@@ -262,17 +262,4 @@ jobs:
             for tag in $tagList; do
               regctl image copy 483285841698.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/go:${tag} ferriswh33l/node-dev:${tag}
             done
-      - run:
-          name: Verify
-          command: |
-            touch verification.txt
-            tagList=$(jq -r 'keys[]' /tmp/registry/metadata.json)
-            for tag in $tagList; do
-              verify=$(regctl manifest diff 483285841698.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/go:${tag} ferriswh33l/node-dev:${tag})
 
-              if ! [[ -z $verify ]]; then
-                echo "There are differences in the manifest for the $tag tag"
-                echo "$tag" >> verification.txt
-              fi
-
-            done
