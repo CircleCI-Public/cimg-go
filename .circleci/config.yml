@@ -281,10 +281,10 @@ jobs:
             done
 
             if [[ -z $verification ]]; then
+              echo "Manifest check succeeded"
+            else
               echo "Please check verification.txt for differences in manifests"
               exit 1
-            else
-              echo "Manifest check succeeded"
             fi
       # - run:
       #     name: Sign Images
