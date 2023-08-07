@@ -158,7 +158,6 @@ jobs:
             for tag in "${GEN_CHECK[@]}"; do
               tag=${tag%#*}
               patch=$(echo $tag | cut -d . -f3)
-              shortTag=${tag%.*}
 
               for registryTag in ${tagList[*]}; do
                 if ! [[ "$registryTag" =~ $tag ]]; then
@@ -266,26 +265,26 @@ jobs:
             for tag in $tagList; do
               regctl image copy 483285841698.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/go:${tag} ferriswh33l/node-dev:${tag}
             done
-      # - run:
-      #     name: Verify
-      #     command: |
-      #       touch verification.txt
-      #       verification=$(cat verification.txt)
-      #       tagList=$(jq -r 'keys[]' /tmp/registry/metadata.json)
-      #       for tag in $tagList; do
-      #         verify=$(regctl manifest diff 483285841698.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/go:${tag} ferriswh33l/node-dev:${tag})
+      - run:
+          name: Verify
+          command: |
+            touch verification.txt
+            verification=$(cat verification.txt)
+            tagList=$(jq -r 'keys[]' /tmp/registry/metadata.json)
+            for tag in $tagList; do
+              verify=$(regctl manifest diff 483285841698.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/go:${tag} ferriswh33l/node-dev:${tag})
 
-      #         if ! [[ -z $verify ]]; then
-      #           echo "There are differences in the manifest for the $tag tag"
-      #           echo "$tag" >> verification.txt
-      #         fi
-      #       done
+              if ! [[ -z $verify ]]; then
+                echo "There are differences in the manifest for the $tag tag"
+                echo "$tag" >> verification.txt
+              fi
+            done
 
-      #       if [[ -z $verification ]]; then
-      #         echo "Please check verification.txt for differences in manifests"
-      #         exit 1
-      #       else
-      #         echo "Manifest check succeeded"
+            if [[ -z $verification ]]; then
+              echo "Please check verification.txt for differences in manifests"
+              exit 1
+            else
+              echo "Manifest check succeeded"
       # - run:
       #     name: Sign Images
       #     command: |
