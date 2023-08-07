@@ -54,15 +54,15 @@ workflows:
           context: cimg-publishing
   docker-wf:
     jobs:
-      - aws-ecr-write:
-          context: cimg-publishing
-      - aws-ecr-read:
-          requires:
-            - aws-ecr-write
-          context: cimg-publishing
+      # - aws-ecr-write:
+      #     context: cimg-publishing
+      # - aws-ecr-read:
+      #     requires:
+      #       - aws-ecr-write
+      #     context: cimg-publishing
       - verify:
-          requires:
-            - aws-ecr-read
+          # requires:
+          #   - aws-ecr-read
           context: cimg-publishing
       - copy:
           requires:
