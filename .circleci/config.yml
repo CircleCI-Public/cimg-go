@@ -175,7 +175,6 @@ jobs:
               jq --arg tag "$tag" --slurpfile input "$file" '. += { ($tag): $input }' /tmp/registry/metadata.json > tmp.json && mv tmp.json /tmp/registry/metadata.json
             done
 
-            rm tmp.json
       - store_artifacts:
           path: /tmp/registry
 
@@ -262,4 +261,3 @@ jobs:
             for tag in $tagList; do
               regctl image copy 483285841698.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/go:${tag} ferriswh33l/node-dev:${tag}
             done
-
