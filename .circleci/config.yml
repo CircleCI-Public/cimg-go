@@ -241,8 +241,8 @@ jobs:
       - run:
           name: Get Keys
           command: |
-            echo $COSIGN_PRIV | base64 -d -o cosign.priv
-            echo $COSIGN_PUB | base64 -d -o cosign.pub
+            echo $COSIGN_PRIV | base64 -d > cosign.priv
+            echo $COSIGN_PUB | base64 -d > cosign.pub
       - run:
           name: Sign container Images
           command: |
