@@ -115,9 +115,6 @@ cimg/go:<go-version>[-variant]
 
 `<go-version>` - The version of Go to use.
 This can be a full SemVer point release (such as `1.12.7`) or just the minor release (such as `1.12.0`).
-**Note: For some reason the Go Team releases the first minor release without the `.0` at the end.
-So instead of releasing Go v1.18.0, they release v1.18.
-For this image, we add the `.0` anyway so that the tagging scheme works with our tooling.**
 If you use the minor release tag, it will automatically point to future patch updates as they are released by the Go Team.
 For example, the tag `1.17` points to Go v1.17 now, but when the next release comes out, it will point to Go v1.17.1.
 
@@ -176,10 +173,6 @@ docker build -t test/go:1.18.0 .
 docker run -it test/go:1.18.0 bash
 ```
 
-**Note: For some reason the Go Team releases the first minor release without the `.0` at the end.
-So instead of releasing Go v1.18.0, they release v1.18.
-For this image, we add the `.0` anyway so that the tagging scheme works with our tooling.**
-
 ### Building the Dockerfiles
 
 To build the Docker images locally as this repository does, you'll want to run the `build-images.sh` script:
@@ -211,10 +204,6 @@ All that would need to be done after that is:
 - merge the PR
 
 The main branch build will then publish a release.
-
-**Note: For some reason the Go Team releases the first minor release without the `.0` at the end.
-So instead of releasing Go v1.18.0, they release v1.18.
-For this image, we add the `.0` anyway so that the tagging scheme works with our tooling.**
 
 ### Incorporating Changes
 
