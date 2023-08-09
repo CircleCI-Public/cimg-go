@@ -54,11 +54,11 @@ workflows:
           context: cimg-publishing
   docker-wf:
     jobs:
-      - aws-ecr-write:
-          context: cimg-publishing
+      # - aws-ecr-write:
+      #     context: cimg-publishing
       - aws-ecr-read:
-          requires:
-            - aws-ecr-write
+          # requires:
+          #   - aws-ecr-write
           context: cimg-publishing
       - verify:
           requires:
@@ -250,7 +250,7 @@ jobs:
             for tag in $tagList; do
               digest=$(jq -r ".[\"$tag\"][0].digest" /tmp/registry/metadata.json)
               digestTag=${tag}@${digest}
-              echo "y" | cosign sign --key cosign.priv 483285841698.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/go:${digestTag}
+              echo "y" | cosign sign --key cosign.priv 483285841698.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/go:${digestTag} --tlog-upload=false
             done
 
   copy:
