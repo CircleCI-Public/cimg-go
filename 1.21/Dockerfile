@@ -16,10 +16,6 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 		g++ \
 		libc6-dev && \
 	sudo rm -rf /var/lib/apt/lists/* && \
-	# Check if we're facing the first minor release issue and adjust if needed
-	if [[ ${GO_VER:(-2)} == ".0" ]]; then \
-	  GO_VER=${GO_VER:0:-2}; \
-	fi && \
 	[[ $(uname -m) == "x86_64" ]] && ARCH="amd64" || ARCH="arm64" && \
 	curl -sSL "https://go.dev/dl/go${GO_VER}.linux-${ARCH}.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
