@@ -54,11 +54,11 @@ workflows:
           context: cimg-publishing
   docker-wf:
     jobs:
-      # - aws-ecr-write:
-      #     context: cimg-publishing
+      - aws-ecr-write:
+          context: cimg-publishing
       - aws-ecr-read:
-          # requires:
-          #   - aws-ecr-write
+          requires:
+            - aws-ecr-write
           context: cimg-publishing
       - verify:
           requires:
@@ -206,12 +206,6 @@ jobs:
             sudo chmod 755 regctl
             sudo mv regctl /usr/local/bin/
       - run:
-          name: Download cosign
-          command: |
-            curl -O -L "https://github.com/sigstore/cosign/releases/latest/download/cosign-linux-amd64"
-            sudo mv cosign-linux-amd64 /usr/local/bin/cosign
-            sudo chmod +x /usr/local/bin/cosign
-      - run:
           name: Sign into ECR
           command: |
             aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin 483285841698.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
@@ -238,20 +232,6 @@ jobs:
               echo "Please check noMatch.txt. There are digests that do not match"
               exit 1
             fi
-      - run:
-          name: Get Keys
-          command: |
-            echo $COSIGN_PRIV | base64 -d > cosign.priv
-            echo $COSIGN_PUB | base64 -d > cosign.pub
-      - run:
-          name: Sign container Images
-          command: |
-            tagList=$(jq -r 'keys[]' /tmp/registry/metadata.json)
-            for tag in $tagList; do
-              digest=$(jq -r ".[\"$tag\"][0].digest" /tmp/registry/metadata.json)
-              digestTag=${tag}@${digest}
-              echo "y" | cosign sign --key cosign.priv 483285841698.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/go:${digestTag} --tlog-upload=false
-            done
 
   copy:
     docker:
@@ -272,6 +252,12 @@ jobs:
             sudo chmod 755 regctl
             sudo mv regctl /usr/local/bin/
       - run:
+          name: Download cosign
+          command: |
+            curl -O -L "https://github.com/sigstore/cosign/releases/latest/download/cosign-linux-amd64"
+            sudo mv cosign-linux-amd64 /usr/local/bin/cosign
+            sudo chmod +x /usr/local/bin/cosign
+      - run:
           name: Sign into ECR and Docker
           command: |
             # Log into ECR for source manifests
@@ -287,6 +273,20 @@ jobs:
               digest=$(jq -r ".[\"$tag\"][0].digest" /tmp/registry/metadata.json)
               digestTag=${tag}@${digest}
               regctl image copy 483285841698.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/go:${digestTag} ferriswh33l/node-dev:${tag}
+            done
+      - run:
+          name: Get Keys
+          command: |
+            echo $COSIGN_PRIV | base64 -d > cosign.priv
+            echo $COSIGN_PUB | base64 -d > cosign.pub
+      - run:
+          name: Sign container Images
+          command: |
+            tagList=$(jq -r 'keys[]' /tmp/registry/metadata.json)
+            for tag in $tagList; do
+              digest=$(jq -r ".[\"$tag\"][0].digest" /tmp/registry/metadata.json)
+              digestTag=${tag}@${digest}
+              echo "y" | cosign sign --key cosign.priv ferriswh33l/node-dev:${digestTag} --tlog-upload=false
             done
       - run:
           name: Verify
@@ -309,6 +309,3 @@ jobs:
               echo "Please check verification.txt for differences in manifests"
               exit 1
             fi
-      # - run:
-      #     name: Sign Images
-      #     command: |
