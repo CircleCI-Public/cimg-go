@@ -29,7 +29,7 @@ workflows:
       when: << pipeline.parameters.check_all >>
       jobs:
         - cimg-verify:
-            docker-namespace: cimg
+            docker-namespace: ccitest
             docker-repository: cimg-orb
             context:
               - cimg-publishing
