@@ -25,9 +25,19 @@ workflows:
         - check-feed:
             context:
               - cimg-publishing
+  check-wf:
+      when: << pipeline.parameters.check_all >>
+      jobs:
+        - cimg-verify:
+            docker-namespace: cimg
+            docker-repository: go
+            context:
+              - cimg-publishing
   main-wf:
     when:
-      not: << pipeline.parameters.cron >>
+      and:
+        - not: << pipeline.parameters.cron >>
+        - not: << pipeline.parameters.check_all >>
     jobs:
       - cimg-build:
           docker-namespace: ccitest
@@ -195,8 +205,10 @@ jobs:
         type: string
       target-namespace:
         type: string
+        default: ""
       target-repository:
         type: string
+        default: ""
     steps:
       - checkout
       - aws-cli/setup:
@@ -220,6 +232,14 @@ jobs:
             - cimg/capture-metadata:
                 docker-namespace: <<parameters.docker-namespace>>
                 docker-repository: <<parameters.docker-repository>>
+            - run:
+                name: Install cosign
+                command: |
+                  url="https://github.com/sigstore/cosign/releases/latest/download/cosign-linux"
+                  [[ $(uname -m) == "x86_64" ]] && ARCH="amd64" || ARCH="arm64"
+                    curl -L "$url-$ARCH" >cosign && \
+                    chmod 755 cosign
+                    sudo mv cosign /usr/local/bin/
             - cimg/verify-all-signatures:
                 docker-namespace: <<parameters.docker-namespace>>
                 docker-repository: <<parameters.docker-repository>>
