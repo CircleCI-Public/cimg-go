@@ -24,7 +24,7 @@ ENV GOPATH /home/circleci/go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 # Install related tools
-ENV GOTESTSUM_V=1.10.1
+ENV GOTESTSUM_V=1.11.0
 ENV GOCI_LINT_V=1.54.2
 ENV GOVULNCHECK_V=1.0.1
 

@@ -9,7 +9,7 @@ FROM cimg/base:2023.07
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VER="1.20.8"
+ENV GO_VER="1.20.9"
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
@@ -24,7 +24,7 @@ ENV GOPATH /home/circleci/go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 # Install related tools
-ENV GOTESTSUM_V=1.10.1
+ENV GOTESTSUM_V=1.11.0
 ENV GOCI_LINT_V=1.54.2
 ENV GOVULNCHECK_V=1.0.1
 
