@@ -22,6 +22,7 @@ workflows:
       not: << pipeline.parameters.cron >>
     jobs:
       - cimg/build-and-deploy:
+          resource-class: large
           docker-namespace: ccitest
           docker-repository: go
           publish-branch: main
