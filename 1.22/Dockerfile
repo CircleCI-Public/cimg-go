@@ -5,11 +5,11 @@
 # By policy, the base image tag should be a quarterly tag unless there's a
 # specific reason to use a different one. This means January, April, July, or
 # October.
-FROM cimg/base:2024.01
+FROM cimg/base:2024.02
 
 LABEL maintainer="CircleCI Execution Team <eng-execution@circleci.com>"
 
-ENV GO_VER="1.22.0"
+ENV GO_VER="1.22.1"
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
@@ -25,8 +25,8 @@ ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 # Install related tools
 ENV GOTESTSUM_V=1.11.0
-ENV GOCI_LINT_V=1.56.0
-ENV GOVULNCHECK_V=1.0.3
+ENV GOCI_LINT_V=1.56.2
+ENV GOVULNCHECK_V=1.0.4
 
 RUN [[ $(uname -m) == "x86_64" ]] && ARCH="amd64" || ARCH="arm64" && \
 	curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${GOTESTSUM_V}/gotestsum_${GOTESTSUM_V}_linux_${ARCH}.tar.gz" | \

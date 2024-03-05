@@ -25,8 +25,8 @@ ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 # Install related tools
 ENV GOTESTSUM_V=1.11.0
-ENV GOCI_LINT_V=1.56.0
-ENV GOVULNCHECK_V=1.0.3
+ENV GOCI_LINT_V=1.56.2
+ENV GOVULNCHECK_V=1.0.4
 
 RUN [[ $(uname -m) == "x86_64" ]] && ARCH="amd64" || ARCH="arm64" && \
 	curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${GOTESTSUM_V}/gotestsum_${GOTESTSUM_V}_linux_${ARCH}.tar.gz" | \
