@@ -16,32 +16,51 @@ workflows:
     jobs:
       - check-feed:
           context:
-            - cimg-publishing
+            - cpe-image-bot-github-creds
   main-wf:
     when:
       not: << pipeline.parameters.cron >>
     jobs:
       - cimg/build-and-deploy:
-          resource-class: large
+          name: "Test"
+          resource-class: xlarge
           docker-namespace: ccitest
           docker-repository: go
-          publish-branch: main
-          context: cimg-publishing
+          filters:
+            branches:
+              ignore:
+                - main
+          context: cimg-docker-image-building
           post-steps:
             - slack/notify:
-                branch_pattern: release-v.+
-                event: pass
-                template: basic_success_1
+                branch_pattern: main
+                event: fail
+                mentions: "@images"
+                template: basic_fail_1
+      - cimg/build-and-deploy:
+          name: "Deploy"
+          resource-class: xlarge
+          docker-repository: go
+          filters:
+            branches:
+              only:
+                - main
+          context:
+            - cimg-docker-image-building
+            - cimg-docker-image-publishing
+          post-steps:
             - slack/notify:
                 branch_pattern: main
                 event: fail
                 mentions: "@images"
                 template: basic_fail_1
 
+
 jobs:
   check-feed:
     docker:
       - image: cimg/base:current
+    resource_class: small
     steps:
       - checkout
       - add_ssh_keys:
