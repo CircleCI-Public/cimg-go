@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   cimg: circleci/cimg@0.6.4
-  slack: circleci/slack@4.12.1
+  slack: circleci/slack@4.13.2
 
 parameters:
   cron:
