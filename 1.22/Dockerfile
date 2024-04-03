@@ -9,7 +9,7 @@ FROM cimg/base:2024.02
 
 LABEL maintainer="CircleCI Execution Team <eng-execution@circleci.com>"
 
-ENV GO_VER="1.22.1"
+ENV GO_VER="1.22.2"
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
@@ -24,12 +24,15 @@ ENV GOPATH /home/circleci/go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 # Install related tools
-ENV GOTESTSUM_V=1.11.0
-ENV GOCI_LINT_V=1.56.2
-ENV GOVULNCHECK_V=1.0.4
+# renovate: datasource=github-releases depName=gotestyourself/gotestsum
+ENV GOTESTSUM_VERSION=1.11.0
+# renovate: datasource=github-releases depName=golangci/golangci-lint
+ENV GOCI_LINT_VERSION=1.57.1
+# renovate: datasource=github-releases depName=golang/vuln
+ENV GOVULNCHECK_VERSION=1.0.4
 
 RUN [[ $(uname -m) == "x86_64" ]] && ARCH="amd64" || ARCH="arm64" && \
-	curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${GOTESTSUM_V}/gotestsum_${GOTESTSUM_V}_linux_${ARCH}.tar.gz" | \
+	curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${GOTESTSUM_VERSION}/gotestsum_${GOTESTSUM_VERSION}_linux_${ARCH}.tar.gz" | \
 	sudo tar -xz -C /usr/local/bin gotestsum && \
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b /usr/local/bin v${GOCI_LINT_V} && \
-	go install "golang.org/x/vuln/cmd/govulncheck@v${GOVULNCHECK_V}" && go clean -cache -modcache && rm -rf "${GOPATH}/pkg"
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b /usr/local/bin v${GOCI_LINT_VERSION} && \
+	go install "golang.org/x/vuln/cmd/govulncheck@v${GOVULNCHECK_VERSION}" && go clean -cache -modcache && rm -rf "${GOPATH}/pkg"
