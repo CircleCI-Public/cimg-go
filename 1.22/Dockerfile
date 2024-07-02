@@ -9,7 +9,7 @@ FROM cimg/base:2024.05
 
 LABEL maintainer="CircleCI Execution Team <eng-execution@circleci.com>"
 
-ENV GO_VER="1.22.4"
+ENV GO_VER="1.22.5"
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
