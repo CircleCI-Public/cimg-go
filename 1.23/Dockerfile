@@ -24,6 +24,9 @@ ENV GOPATH="/home/circleci/go"
 ENV GOARM64="v8.0"
 ENV PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
 
+# disable telemetry (in a version-independent way)
+RUN go run golang.org/x/telemetry/cmd/gotelemetry@latest off
+
 # Install related tools
 # renovate: datasource=github-releases depName=gotestyourself/gotestsum
 ENV GOTESTSUM_VERSION=1.12.0
