@@ -23,53 +23,13 @@ workflows:
     when:
       not: << pipeline.parameters.cron >>
     jobs:
-#      - cimg/build-and-deploy:
-#          name: "Test"
-#          resource-class: arm.xlarge
-#          docker-namespace: ccitest
-#          docker-repository: go
-#          filters:
-#            branches:
-#              ignore:
-#                - main
-#          context:
-#            - slack-notification-access-token
-#            - slack-cimg-notifications
-#            - cimg-docker-image-building
-#          post-steps:
-#            - slack/notify:
-#                branch_pattern: main
-#                event: fail
-#                mentions: "@images"
-#                template: basic_fail_1
       - do-nothing
-#      - cimg/build-and-deploy:
-#          name: "Deploy"
-#          resource-class: xlarge
-#          docker-repository: go
-#          filters:
-#            branches:
-#              only:
-#                - main
-#          context:
-#            - slack-notification-access-token
-#            - slack-cimg-notifications
-#            - cimg-docker-image-building
-#            - cimg-docker-image-publishing
-#          post-steps:
-#            - slack/notify:
-#                branch_pattern: main
-#                event: fail
-#                mentions: "@images"
-#                template: basic_fail_1
-
 jobs:
   do-nothing:
-    docker:
-      - image: cimg/base:2024.07
+    machine:
+      image: ubuntu-2204:2024.04.4
     resource_class: xlarge
     steps:
-      - setup_remote_docker
       - checkout
       - run: sudo apt-get update && sudo apt-get install -y qemu-user-static binfmt-support
       - run: sleep 500
