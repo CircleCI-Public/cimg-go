@@ -23,41 +23,57 @@ workflows:
     when:
       not: << pipeline.parameters.cron >>
     jobs:
-      - cimg/build-and-deploy:
-          name: "Test"
-          resource-class: xlarge
-          docker-namespace: ccitest
-          docker-repository: go
-          filters:
-            branches:
-              ignore:
-                - main
-          context: 
-            - slack-notification-access-token
-            - slack-cimg-notifications
-            - cimg-docker-image-building
-          post-steps:
-            - slack/notify:
-                branch_pattern: main
-                event: fail
-                mentions: "@images"
-                template: basic_fail_1
-      - cimg/build-and-deploy:
-          name: "Deploy"
-          resource-class: xlarge
-          docker-repository: go
-          filters:
-            branches:
-              only:
-                - main
+      - build_and_deploy:
           context:
-            - slack-notification-access-token
-            - slack-cimg-notifications
             - cimg-docker-image-building
             - cimg-docker-image-publishing
-          post-steps:
-            - slack/notify:
-                branch_pattern: main
-                event: fail
-                mentions: "@images"
-                template: basic_fail_1
+#      - cimg/build-and-deploy:
+#          name: "Test"
+#          resource-class: xlarge
+#          docker-namespace: ccitest
+#          docker-repository: go
+#          filters:
+#            branches:
+#              ignore:
+#                - main
+#          context:
+#            - slack-notification-access-token
+#            - slack-cimg-notifications
+#            - cimg-docker-image-building
+#          post-steps:
+#            - slack/notify:
+#                branch_pattern: main
+#                event: fail
+#                mentions: "@images"
+#                template: basic_fail_1
+#      - cimg/build-and-deploy:
+#          name: "Deploy"
+#          resource-class: xlarge
+#          docker-repository: go
+#          filters:
+#            branches:
+#              only:
+#                - main
+#          context:
+#            - slack-notification-access-token
+#            - slack-cimg-notifications
+#            - cimg-docker-image-building
+#            - cimg-docker-image-publishing
+#          post-steps:
+#            - slack/notify:
+#                branch_pattern: main
+#                event: fail
+#                mentions: "@images"
+#                template: basic_fail_1
+
+jobs:
+  build_and_deploy:
+    machine:
+      image: ubuntu-2404:current
+    resource_class: xlarge
+    steps:
+      - run: sudo apt-get install qemu-system
+      - run: docker run --privileged --rm tonistiigi/binfmt --install all
+      - checkout
+      - run: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
+      - run: ./build-images.sh
