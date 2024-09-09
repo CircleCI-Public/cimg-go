@@ -32,19 +32,25 @@ jobs:
   build_and_deploy:
     machine:
       image: ubuntu-2404:current
-    resource_class: xlarge
+    resource_class: 2xlarge
     steps:
-      - run: sudo apt-get install qemu-system
-      - run: docker run --privileged --rm tonistiigi/binfmt --install all
+      - run:
+          name: Install latest QEMU
+          command: sudo apt-get install qemu-system
+      - run:
+          name: Register binfmt for supported platforms
+          command: docker run --privileged --rm tonistiigi/binfmt --install all
       - checkout
-      - run: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
+      - run:
+          name: Docker login
+          command: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
       - when:
           condition:
             not:
               equal: [ main, << pipeline.git.branch >> ]
           steps:
             - run:
-                name: "Override namespace with ccitest"
+                name: "Build and deploy to ccitest/go"
                 command: |
                   DOCKER_NAMESPACE="ccitest"
                   source ./manifest
@@ -75,4 +81,6 @@ jobs:
           condition:
             equal: [ main, << pipeline.git.branch >> ]
           steps:
-            - run: ./build-images.sh
+            - run:
+                name: "Build and deploy to cimg/go"
+                command: ./build-images.sh
