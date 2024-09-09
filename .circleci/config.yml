@@ -27,44 +27,6 @@ workflows:
           context:
             - cimg-docker-image-building
             - cimg-docker-image-publishing
-#      - cimg/build-and-deploy:
-#          name: "Test"
-#          resource-class: xlarge
-#          docker-namespace: ccitest
-#          docker-repository: go
-#          filters:
-#            branches:
-#              ignore:
-#                - main
-#          context:
-#            - slack-notification-access-token
-#            - slack-cimg-notifications
-#            - cimg-docker-image-building
-#          post-steps:
-#            - slack/notify:
-#                branch_pattern: main
-#                event: fail
-#                mentions: "@images"
-#                template: basic_fail_1
-#      - cimg/build-and-deploy:
-#          name: "Deploy"
-#          resource-class: xlarge
-#          docker-repository: go
-#          filters:
-#            branches:
-#              only:
-#                - main
-#          context:
-#            - slack-notification-access-token
-#            - slack-cimg-notifications
-#            - cimg-docker-image-building
-#            - cimg-docker-image-publishing
-#          post-steps:
-#            - slack/notify:
-#                branch_pattern: main
-#                event: fail
-#                mentions: "@images"
-#                template: basic_fail_1
 
 jobs:
   build_and_deploy:
@@ -76,4 +38,41 @@ jobs:
       - run: docker run --privileged --rm tonistiigi/binfmt --install all
       - checkout
       - run: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
-      - run: ./build-images.sh
+      - when:
+          condition:
+            not:
+              equal: [ main, << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: "Override namespace with ccitest"
+                command: |
+                  DOCKER_NAMESPACE="ccitest"
+                  source ./manifest
+  
+                  while IFS= read -r line; do
+  
+                  if [[ $arm64 == "1" ]]; then
+                    directory=$(echo "$line" | awk '{print $6}')
+                  else
+                    directory=$(echo "$line" | awk '{print $4}')
+                  fi
+                  if [[ "${directory}" =~ "Dockerfile" ]]; then
+                    if [ "${parent:?}" != "base" ]; then
+                      sed -i "s|cimg/${repository:?}|${DOCKER_NAMESPACE}/${repository}|g" "$directory"
+                      sed -i "s|cimg/${parent}|${DOCKER_NAMESPACE}/${parent}|g" "$directory"
+                    else
+                      sed -i "s|cimg/$repository|${DOCKER_NAMESPACE}/${repository}|g" "$directory"
+                    fi
+                  fi
+  
+                  done < ./build-images.sh
+  
+                  sed 's|cimg|'"${DOCKER_NAMESPACE}"'|g' ./build-images.sh > ./build-images-stage.sh
+  
+                  chmod +x ./build-images-stage.sh
+                  ./build-images-stage.sh
+      - when:
+          condition:
+            equal: [ main, << pipeline.git.branch >> ]
+          steps:
+            - run: ./build-images.sh
