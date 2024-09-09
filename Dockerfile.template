@@ -20,8 +20,8 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	curl -sSL "https://go.dev/dl/go${GO_VER}.linux-${ARCH}.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
 
-ENV GOPATH /home/circleci/go
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+ENV GOPATH="/home/circleci/go"
+ENV PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
 
 # Install related tools
 # renovate: datasource=github-releases depName=gotestyourself/gotestsum
