@@ -1,6 +1,6 @@
 # vim:set ft=dockerfile:
 
-FROM cimg/go:1.23.1-node
+FROM cimg/go:1.23.2-node
 
 LABEL maintainer="CircleCI Community & Partner Engineering Team <community-partner@circleci.com>"
 
@@ -14,7 +14,6 @@ RUN sudo apt-get update && \
 	sudo apt-get install --yes --no-install-recommends \
 		xvfb \
 	&& \
-
     # Install Java only if it's not already available
     # Java is installed for Selenium
     if ! command -v java > /dev/null; then \
