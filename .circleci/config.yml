@@ -36,7 +36,7 @@ jobs:
     steps:
       - run:
           name: Install latest QEMU
-          command: sudo apt-get install qemu-system
+          command: sudo apt-get update && sudo apt-get install qemu-system
       - run:
           name: Register binfmt for supported platforms
           command: docker run --privileged --rm tonistiigi/binfmt --install all
