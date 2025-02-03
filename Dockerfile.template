@@ -31,7 +31,7 @@ ENV GOCI_LINT_VERSION=1.60.1
 # renovate: datasource=github-releases depName=golang/vuln
 ENV GOVULNCHECK_VERSION=1.1.4
 # renovate: datasource=github-releases depName=go-task/task
-ENV TASK_VERSION=3.40.1
+ENV TASK_VERSION=3.41.0
 
 RUN [[ $(uname -m) == "x86_64" ]] && ARCH="amd64" || ARCH="arm64" && \
 	curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${GOTESTSUM_VERSION}/gotestsum_${GOTESTSUM_VERSION}_linux_${ARCH}.tar.gz" | \
