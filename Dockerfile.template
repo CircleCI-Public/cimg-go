@@ -27,7 +27,7 @@ ENV PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
 # renovate: datasource=github-releases depName=gotestyourself/gotestsum
 ENV GOTESTSUM_VERSION=1.12.0
 # renovate: datasource=github-releases depName=golangci/golangci-lint
-ENV GOCI_LINT_VERSION=1.60.1
+ENV GOCI_LINT_VERSION=1.64.5
 # renovate: datasource=github-releases depName=golang/vuln
 ENV GOVULNCHECK_VERSION=1.1.4
 # renovate: datasource=github-releases depName=go-task/task
