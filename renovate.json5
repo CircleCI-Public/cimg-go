@@ -1,24 +1,26 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
   ],
-  "ignorePaths": [
-    "1.17/",
-    "1.18/",
-    "1.19/",
-    "1.20/",
-    "1.21/",
-    "1.22/"
+  ignorePaths: [
+    '1.17/',
+    '1.18/',
+    '1.19/',
+    '1.20/',
+    '1.21/',
+    '1.22/',
   ],
-  "customManagers": [
+  customManagers: [
     {
-      "customType": "regex",
-      "fileMatch": ["Dockerfile.template"],
-      "matchStrings": [
-        "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?_VERSION=\\s*(?<currentValue>.*)\\s"
+      customType: 'regex',
+      managerFilePatterns: [
+        '/Dockerfile.template/',
       ],
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
-    }
-  ]
+      matchStrings: [
+        '#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?_VERSION=\\s*(?<currentValue>.*)\\s',
+      ],
+      versioningTemplate: '{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}',
+    },
+  ],
 }
