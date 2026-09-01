@@ -9,7 +9,7 @@ FROM cimg/base:2026.08
 
 LABEL maintainer="CircleCI Execution Team <eng-execution@circleci.com>"
 
-ENV GO_VER="1.26.7"
+ENV GO_VER="1.26.8"
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
@@ -27,7 +27,7 @@ ENV PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
 # renovate: datasource=github-releases depName=gotestyourself/gotestsum
 ENV GOTESTSUM_VERSION=1.13.0
 # renovate: datasource=github-releases depName=golangci/golangci-lint
-ENV GOCI_LINT_VERSION=2.12.2
+ENV GOCI_LINT_VERSION=2.13.1
 # renovate: datasource=github-releases depName=golang/vuln
 ENV GOVULNCHECK_VERSION=1.1.4
 # renovate: datasource=github-releases depName=go-task/task
